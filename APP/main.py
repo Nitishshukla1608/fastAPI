@@ -119,6 +119,22 @@ def update_shipment(
         "shipment": shipments[ship_id]
     }
 
+@app.put(f"/update-shipment/{sid}")
+def update_shipemnt(data:UpdateShipment,sid):
+    if sid not in shipementts:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product with this id is not available",
+        )
+    shipments[sid].update({
+        "weight": data.weight,
+        "content": data.content
+    })
+    return {
+        "message": f"Shipment {sid} updated successfully",
+        "shipment": shipments[sid]
+    }
+
 
 
 
@@ -161,3 +177,7 @@ def delete_shipment(ship_id: int):
     return {
         "message": f"Shipment {ship_id} deleted successfully"
     }
+
+
+
+   
