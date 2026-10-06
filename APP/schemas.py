@@ -1,19 +1,41 @@
-from turtle import window_height
+from enum import Enum
 from pydantic import BaseModel
-from typing import Optimal
-
-class Ships(BasemOdel):
-    weight:float
-    content:str
+from fastapi import FastAPI
 
 
-class Response(BaseModel):
-    id:int
-    weight:float
-    content:str
-    status:str
+app = FastAPI()
 
 
-class UpdateShipment(BaseModel):
-    weight:float
-    content:str
+class Status(str, Enum):
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+
+
+class User(BaseModel):
+    name: str
+    status: Status
+
+
+@app.get("/")
+def home():
+    return {"message": "FastAPI is working"}
+
+
+@app.post("/users")
+def create_user(user: User):
+    return user
+    
+
+
+class UserCreate(BaseModel):
+    username: str
+    email: EmailStr
+    password: str
+
+
+class UserResponse(BaseModel):
+    id: int
+    username: str
+    email: EmailStr
+
